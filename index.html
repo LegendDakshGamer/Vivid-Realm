@@ -1,398 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vivid Realm</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-darkest: #0a0c10;
-            --bg-main: #0f131a;
-            --bg-card: rgba(26, 32, 44, 0.6);
-            --border-glow: rgba(88, 101, 242, 0.2);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --blurple: #5865F2;
-            --blurple-glow: rgba(88, 101, 242, 0.4);
-            --neon-green: #2ecc71;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vivid Realm — Discord</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
+:root{
+  --bg: #0a0b12;
+  --bg-2: #0f1019;
+  --surface: #14151f;
+  --surface-2: #191a26;
+  --border: rgba(255,255,255,0.08);
+  --border-2: rgba(255,255,255,0.14);
+  --violet: #8b5cf6;
+  --violet-dim: #5b3fa8;
+  --pink: #ff5fa2;
+  --teal: #3fe8b8;
+  --text: #e9e8f5;
+  --muted: #928fb0;
+  --muted-2: #625f7d;
+}
 
-        body {
-            background-color: var(--bg-darkest);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(88, 101, 242, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(15, 19, 26, 1) 0px, transparent 70%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            overflow-x: hidden;
-        }
+*{ margin:0; padding:0; box-sizing:border-box; }
 
-        /* Subtle Background Grid Effect */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
-            background-size: 20px 20px;
-            z-index: -1;
-        }
+html,body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+}
 
-        /* Header Animation */
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInDown 0.8s ease-out;
-        }
+.display{
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.01em;
+}
 
-        header .badge {
-            background: rgba(88, 101, 242, 0.1);
-            border: 1px solid var(--blurple);
-            color: #818cf8;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
+.mono{
+  font-family: 'JetBrains Mono', monospace;
+}
 
-        header .badge span {
-            width: 8px;
-            height: 8px;
-            background-color: var(--neon-green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--neon-green);
-        }
+/* ---------- Ambient background ---------- */
+.ambient{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.orb{
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  will-change: transform;
+}
+.orb-1{ width: 480px; height: 480px; background: var(--violet); top: -120px; left: -100px; animation: drift1 22s ease-in-out infinite; }
+.orb-2{ width: 380px; height: 380px; background: var(--pink); top: 30%; right: -140px; animation: drift2 26s ease-in-out infinite; }
+.orb-3{ width: 420px; height: 420px; background: var(--teal); bottom: -160px; left: 20%; opacity: 0.18; animation: drift3 30s ease-in-out infinite; }
 
-        header h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(to right, #ffffff, #9ca3af);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
-        }
+@keyframes drift1{
+  0%,100%{ transform: translate(0,0); }
+  50%{ transform: translate(60px, 80px); }
+}
+@keyframes drift2{
+  0%,100%{ transform: translate(0,0); }
+  50%{ transform: translate(-70px, 50px); }
+}
+@keyframes drift3{
+  0%,100%{ transform: translate(0,0) scale(1); }
+  50%{ transform: translate(40px,-40px) scale(1.08); }
+}
 
-        header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 500px;
-            margin: 0 auto;
-        }
+.grain{
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
-        /* Ultimate CTA Button */
-        .cta-container {
-            margin-bottom: 60px;
-            animation: fadeIn 1s ease-out 0.2s both;
-        }
+/* ---------- Layout ---------- */
+.wrap{
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
 
-        .join-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--blurple);
-            color: white;
-            text-decoration: none;
-            padding: 18px 44px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 0 0 rgba(88, 101, 242, 0), 0 10px 25px -5px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 28px 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 3;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Rajdhani', sans-serif;
+  font-weight:700;
+  font-size:1.15rem;
+  letter-spacing:0.04em;
+}
+.brand-dot{
+  width:9px; height:9px; border-radius:50%;
+  background: var(--teal);
+  box-shadow: 0 0 10px var(--teal);
+}
+.nav-status{
+  display:flex; align-items:center; gap:8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.75rem;
+  color: var(--teal);
+  border: 1px solid rgba(63,232,184,0.3);
+  background: rgba(63,232,184,0.06);
+  padding: 6px 12px;
+  border-radius: 100px;
+}
+.pulse-tiny{
+  width:6px; height:6px; border-radius:50%;
+  background: var(--teal);
+  animation: pulse-op 2s ease-in-out infinite;
+}
+@keyframes pulse-op{
+  0%,100%{ opacity:1; }
+  50%{ opacity:0.35; }
+}
 
-        .join-btn:hover {
-            background-color: #4752C4;
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px var(--blurple-glow), 0 15px 30px -5px rgba(0,0,0,0.5);
-        }
+/* ---------- Hero ---------- */
+.hero{
+  padding: 60px 0 40px;
+  text-align:center;
+  position: relative;
+}
+.eyebrow{
+  font-family:'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: var(--muted-2);
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.eyebrow span{ color: var(--pink); }
 
-        .join-btn i {
-            font-size: 1.4rem;
-        }
+.title{
+  font-family:'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.2rem, 11vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  background: linear-gradient(120deg, #fff 15%, var(--violet) 55%, var(--pink) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 80px rgba(139,92,246,0.25);
+  margin-bottom: 18px;
+}
 
-        /* Glassmorphism Team Section */
-        .team-container {
-            width: 100%;
-            max-width: 950px;
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
+.tagline{
+  max-width: 480px;
+  margin: 0 auto 40px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
 
-        .team-container h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.cta-row{
+  display:flex;
+  gap: 14px;
+  justify-content:center;
+  flex-wrap: wrap;
+}
 
-        .team-container h2::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
-        }
+.btn{
+  font-family:'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  padding: 15px 34px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display:inline-flex;
+  align-items:center;
+  gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary{
+  background: linear-gradient(120deg, var(--violet), #6d3fd8);
+  color: #fff;
+  box-shadow: 0 8px 30px rgba(139,92,246,0.35);
+}
+.btn-primary:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(139,92,246,0.5);
+}
+.btn-ghost{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-2);
+}
+.btn-ghost:hover{
+  border-color: var(--pink);
+  color: var(--pink);
+}
 
-        .tier-section {
-            margin-bottom: 45px;
-        }
+/* ---------- HUD Status Panel ---------- */
+.hud{
+  margin: 64px auto 0;
+  max-width: 720px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-radius: 20px;
+  padding: 28px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.hud::before{
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  opacity: 0.6;
+}
 
-        .tier-section:last-child {
-            margin-bottom: 0;
-        }
+.hud-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.hud-label{
+  font-family:'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--muted-2);
+  text-transform: uppercase;
+}
+.radar{
+  position: relative;
+  width: 14px; height: 14px;
+}
+.radar-core{
+  position:absolute; inset:0;
+  margin:auto;
+  width:8px; height:8px;
+  border-radius:50%;
+  background: var(--teal);
+  box-shadow: 0 0 12px var(--teal);
+}
+.radar-ping{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border: 1.5px solid var(--teal);
+  animation: ping 2.2s cubic-bezier(0,0,0.2,1) infinite;
+}
+@keyframes ping{
+  0%{ transform: scale(1); opacity: 0.8; }
+  100%{ transform: scale(3.2); opacity: 0; }
+}
+.online-tag{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-family:'Rajdhani', sans-serif;
+  font-weight:700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: var(--teal);
+}
 
-        .tier-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+.stat-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.stat{
+  text-align:center;
+  padding: 16px 8px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+}
+.stat-num{
+  font-family:'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--text);
+  line-height:1;
+}
+.stat-num.pink{ color: var(--pink); }
+.stat-num.violet{ color: var(--violet); }
+.stat-label{
+  margin-top: 8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
 
-        .tier-title {
-            font-size: 0.95rem;
-            color: #818cf8;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
+/* ---------- About ---------- */
+.section{
+  padding: 100px 0 20px;
+}
+.section-head{
+  text-align:center;
+  margin-bottom: 50px;
+}
+.section-eyebrow{
+  font-family:'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 14px;
+}
+.section-title{
+  font-family:'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+}
+.section-title .accent{ color: var(--violet); }
 
-        /* Cards Grid Layout */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-        }
+.about-text{
+  max-width: 620px;
+  margin: 0 auto;
+  text-align:center;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
 
-        .card {
-            background: rgba(15, 19, 26, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 28px 24px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* ---------- Channel cards ---------- */
+.channels{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 50px;
+}
+.channel-card{
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.channel-card::after{
+  content:'';
+  position:absolute;
+  top:0; left:0;
+  width: 3px;
+  height: 100%;
+  background: var(--card-accent, var(--violet));
+  opacity: 0.7;
+}
+.channel-card:hover{
+  transform: translateY(-4px);
+  border-color: var(--border-2);
+  background: var(--surface-2);
+}
+.channel-head{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.channel-hash{
+  font-family:'JetBrains Mono', monospace;
+  color: var(--card-accent, var(--violet));
+  font-weight: 500;
+}
+.channel-name{
+  font-family:'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+.channel-desc{
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
 
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(88, 101, 242, 0.05) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+/* ---------- Footer CTA ---------- */
+.footer-cta{
+  margin-top: 120px;
+  padding: 70px 24px 50px;
+  text-align:center;
+  border-top: 1px solid var(--border);
+}
+.footer-title{
+  font-family:'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  margin-bottom: 14px;
+}
+.footer-title .accent{
+  background: linear-gradient(120deg, var(--violet), var(--pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.footer-sub{
+  color: var(--muted);
+  margin-bottom: 32px;
+  font-size: 0.98rem;
+}
+.footer-fine{
+  margin-top: 40px;
+  font-family:'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted-2);
+  letter-spacing: 0.04em;
+}
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--border-glow);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
+/* ---------- Motion & responsive ---------- */
+@media (prefers-reduced-motion: reduce){
+  .orb, .pulse-tiny, .radar-ping{ animation: none !important; }
+}
 
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        /* Avatar Styling */
-        .avatar-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px auto;
-        }
-
-        .avatar-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--blurple) 0%, #313ba6 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.6rem;
-            color: white;
-            border: 3px solid rgba(255,255,255,0.05);
-        }
-
-        /* Glowing Active Badge */
-        .status-dot {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 16px;
-            height: 16px;
-            background-color: var(--neon-green);
-            border: 3px solid #0f131a;
-            border-radius: 50%;
-        }
-
-        .card h4 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            letter-spacing: -0.3px;
-        }
-
-        .card .role-title {
-            color: var(--blurple);
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        .card .role-desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Empty/Vacant States */
-        .empty-tier {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px dashed rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .empty-tier i {
-            font-size: 1.1rem;
-            opacity: 0.5;
-        }
-
-        /* Animations syntax */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            header h1 { font-size: 2.2rem; }
-            .team-container { padding: 24px; }
-        }
-    </style>
+@media (max-width: 640px){
+  .stat-grid{ grid-template-columns: 1fr; }
+  .channels{ grid-template-columns: 1fr; }
+  .hud{ padding: 20px; }
+  nav{ flex-direction: column; gap: 14px; }
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="badge"><span></span> Server Active</div>
-        <h1>Vivid Realm</h1>
-        <p>Join our vibrant community and have fun with people , late night gaming , discussions etc</p>
-    </header>
+<div class="ambient">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grain"></div>
 
-    <div class="cta-container">
-        <a href="https://discord.gg/smK5JCsQ3r" target="_blank" class="join-btn">
-            <i class="fa-brands fa-discord"></i> Invitation link
-        </a>
+<nav>
+  <div class="brand"><span class="brand-dot"></span>VIVID REALM</div>
+  <div class="nav-status"><span class="pulse-tiny"></span>SERVER ONLINE</div>
+</nav>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">GAMING <span>·</span> ANIME <span>·</span> CHILL</div>
+    <h1 class="title">VIVID REALM</h1>
+    <p class="tagline">Where gaming nights turn into anime marathons, and nobody's ever too tired to just vibe. Come for the squad, stay for the chaos.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://discord.gg/f9EbGgKrxh" target="_blank" rel="noopener">
+        Step Into the Realm →
+      </a>
+      <a class="btn btn-ghost" href="#about">Learn more</a>
     </div>
 
-    <main class="team-container">
-        <h2><i class="fa-solid fa-shield-halved"></i> Global Command Structure</h2>
+    <div class="hud">
+      <div class="hud-top">
+        <div class="hud-label">Live Server Status</div>
+        <div class="online-tag">
+          <div class="radar"><div class="radar-ping"></div><div class="radar-core"></div></div>
+          ONLINE
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-num">128</div>
+          <div class="stat-label">Online Now</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num pink">842</div>
+          <div class="stat-label">Total Members</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num violet">4</div>
+          <div class="stat-label">Voice Channels Live</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <section class="tier-section">
-            <div class="tier-header">
-                <div class="tier-title">01 // Managing Partners</div>
-            </div>
-            <div class="cards-grid">
-                
-                <div class="card">
-                    <div class="avatar-container">
-                        <div class="avatar-placeholder">K</div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <h4>King(CTO)</h4>
-                    <div class="role-title">Chief Technical Officer</div>
-                    <p class="role-desc">Oversees system infrastructure, development parameters, and technical architecture pipelines.</p>
-                </div>
+  <section class="section" id="about">
+    <div class="section-head">
+      <div class="section-eyebrow">The Realm</div>
+      <div class="section-title">Built for people who game late<br>and watch anime <span class="accent">later</span>.</div>
+    </div>
+    <p class="about-text">Vivid Realm is a community for gamers and anime fans who just want a place to land after a long day. Queue up for ranked, argue about the latest episode, or say nothing at all in a voice call at 2am. Every kind of member has a seat here — loud, quiet, competitive, or just here to lurk.</p>
+  </section>
 
-                <div class="card">
-                    <div class="avatar-container">
-                        <div class="avatar-placeholder" style="font-size: 1.1rem;">ヴェ</div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <h4>ヴェダンシュ(CMO)</h4>
-                    <div class="role-title">Chief Marketing Officer</div>
-                    <p class="role-desc">Directs outer-network outreach strategies, server growth mechanics, and brand identity.</p>
-                </div>
+  <section class="section">
+    <div class="section-head">
+      <div class="section-eyebrow">Inside the Server</div>
+      <div class="section-title">A few places to start</div>
+    </div>
+    <div class="channels">
+      <div class="channel-card" style="--card-accent: var(--violet)">
+        <div class="channel-head">
+          <span class="channel-hash">#</span>
+          <span class="channel-name">gaming-lounge</span>
+        </div>
+        <p class="channel-desc">Squad up for ranked, share clutch plays, and talk trash — friendly trash, mostly.</p>
+      </div>
+      <div class="channel-card" style="--card-accent: var(--pink)">
+        <div class="channel-head">
+          <span class="channel-hash">#</span>
+          <span class="channel-name">anime-corner</span>
+        </div>
+        <p class="channel-desc">New episode drops, character debates, and way too many spoilers hidden behind tags.</p>
+      </div>
+      <div class="channel-card" style="--card-accent: var(--teal)">
+        <div class="channel-head">
+          <span class="channel-hash">#</span>
+          <span class="channel-name">chill-vibes</span>
+        </div>
+        <p class="channel-desc">Lo-fi playlists, late-night talks, and the occasional 3am existential crisis.</p>
+      </div>
+      <div class="channel-card" style="--card-accent: var(--violet)">
+        <div class="channel-head">
+          <span class="channel-hash">#</span>
+          <span class="channel-name">memes-and-mayhem</span>
+        </div>
+        <p class="channel-desc">Cursed content only. Enter at your own risk.</p>
+      </div>
+    </div>
+  </section>
 
-                <div class="card">
-                    <div class="avatar-container">
-                        <div class="avatar-placeholder">P</div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <h4>Phantom(CPRO)</h4>
-                    <div class="role-title">Chief Public Relations Officer</div>
-                    <p class="role-desc">Manages external community liaisons, event partnerships, and general audience engagement portfolios.</p>
-                </div>
+  <section class="footer-cta">
+    <div class="footer-title">Ready to join the <span class="accent">Realm?</span></div>
+    <p class="footer-sub">One click. No essays required. Just vibes and a decent internet connection.</p>
+    <a class="btn btn-primary" href="https://discord.gg/f9EbGgKrxh" target="_blank" rel="noopener">Join Vivid Realm →</a>
+    <div class="footer-fine">discord.gg/f9EbGgKrxh · member counts shown are placeholders, update anytime</div>
+  </section>
 
-            </div>
-        </section>
-
-        <section class="tier-section">
-            <div class="tier-header">
-                <div class="tier-title">02 // Senior Partners</div>
-            </div>
-            <div class="empty-tier">
-                <i class="fa-solid fa-lock"></i> Applications Closed — Clearance Level Restricted
-            </div>
-        </section>
-
-        <section class="tier-section">
-            <div class="tier-header">
-                <div class="tier-title">03 // Junior Partners</div>
-            </div>
-            <div class="empty-tier">
-                <i class="fa-solid fa-circle-dashed"></i> No Officers Assigned to Operations Currently
-            </div>
-        </section>
-
-    </main>
+</div>
 
 </body>
 </html>
